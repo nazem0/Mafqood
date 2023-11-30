@@ -1,0 +1,48 @@
+Report
+==========================================================
+GUId Id
+string Name x (Max 200)
+bool Gender
+int SkinToneId
+int HairTypeId
+int HairColorId
+int EyeColorId
+char Length = (Short-Normal-Tall) (CM) x == Enum
+char Weight = (Under-Normal-Over) (KG) x == Enum
+int Age x
+string Street (Max 255)
+string District (Max 100)
+int CityId
+int GovernorateId
+DateTime DateTime
+string ContactNumber Validate By Phone Number RegEx Attached (Max 19)
+string AdditionalInfo (Description) MaxLength(1500) x
+==========================================================
+ReportAttachment (Max Attachments 5 Per Report).
+GUId Id
+GuId ReportId
+string Attachment (Allow Only Image Datatypes), (Max 256 Characters) x
+==========================================================
+Governorate & City Already Made
+==========================================================
+Colors
+int Id
+string ColorValue ==> a hex value rendered in front
+==========================================================
+SkinTone
+int Id
+int ColorId
+==========================================================
+HairColor
+int Id
+int ColorId
+==========================================================
+EyeColor
+int Id
+int ColorId
+==========================================================
+RegEx
+  PasswordRegEx = (/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
+  PhoneNumberRegEx = (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}/);
+==========================================================
+FluentValidation Dependency Injection Extensions
