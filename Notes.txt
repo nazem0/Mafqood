@@ -1,48 +1,35 @@
-Report
-==========================================================
-GUId Id
-string Name x (Max 200)
-bool Gender
-int SkinToneId
-int HairTypeId
-int HairColorId
-int EyeColorId
-char Length = (Short-Normal-Tall) (CM) x == Enum
-char Weight = (Under-Normal-Over) (KG) x == Enum
-int Age x
-string Street (Max 255)
-string District (Max 100)
-int CityId
-int GovernorateId
-DateTime DateTime
-string ContactNumber Validate By Phone Number RegEx Attached (Max 19)
-string AdditionalInfo (Description) MaxLength(1500) x
-==========================================================
-ReportAttachment (Max Attachments 5 Per Report).
-GUId Id
-GuId ReportId
-string Attachment (Allow Only Image Datatypes), (Max 256 Characters) x
-==========================================================
-Governorate & City Already Made
-==========================================================
-Colors
-int Id
-string ColorValue ==> a hex value rendered in front
-==========================================================
-SkinTone
-int Id
-int ColorId
-==========================================================
-HairColor
-int Id
-int ColorId
-==========================================================
-EyeColor
-int Id
-int ColorId
-==========================================================
 RegEx
   PasswordRegEx = (/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
   PhoneNumberRegEx = (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}/);
 ==========================================================
 FluentValidation Dependency Injection Extensions
+
+common conventions:
+
+Variables:
+
+Use camelCase for local variables and private fields: var myVariable = 10;
+Prefix instance fields with an underscore: private int _myField;
+PascalCase for public or internal fields: public int MyProperty { get; set; }
+Classes and Types:
+
+Use PascalCase for class names and type names: public class MyClass { }
+Interfaces should start with "I" and use PascalCase: public interface IMyInterface { }
+Enum types should be PascalCase: public enum DaysOfWeek { }
+Functions and Methods:
+
+Use PascalCase for method names: public void MyMethod() { }
+Use descriptive names that convey the method's purpose.
+Namespaces:
+
+Use PascalCase for namespaces, following the reverse domain name convention: namespace MyCompany.MyProject.SubNamespace { }
+Constants:
+
+Use all caps with underscores for constant names: public const int MAX_COUNT = 100;
+Properties:
+
+Use PascalCase for property names: public int MyProperty { get; set; }
+Avoid using public fields; prefer properties for encapsulation.
+Parameters:
+
+Use camelCase for method parameters: public void MyMethod(int myParameter) { }
