@@ -35,6 +35,12 @@ namespace Infrastructure.Persistence
                 .UseLazyLoadingProxies()
                 .UseSqlServer(@"Data Source=.; Initial Catalog=Mafqood; 
                     Integrated Security=True; TrustServerCertificate=True");
+
+            //optionsBuilder
+            //    .UseLazyLoadingProxies()
+            //    .UseSqlServer(@"Data Source=localhost; Initial Catalog=Mafqood;
+            //        TrustServerCertificate=True; User Id=SA; Password=$aMer2030");
+
             base.OnConfiguring(optionsBuilder);
         }
 

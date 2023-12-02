@@ -17,6 +17,12 @@ public class Program
             .UseSqlServer
             (builder.Configuration.GetConnectionString("MyDB"),
             c => c.EnableRetryOnFailure());
+
+            //context
+            //.UseLazyLoadingProxies()
+            //.UseSqlServer
+            //(builder.Configuration.GetConnectionString("MySamer"),
+            //c => c.EnableRetryOnFailure());
         });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
