@@ -4,32 +4,24 @@ namespace Infrastructure
 {
     public class FileStorageHelper
     {
-        private static string staticFilesDirectoryName = "wwwroot";
-        public static string CreateDirectoryAsync(string id, string mediaDirectoryName)
+        private static readonly string staticFilesDirectoryName = "wwwroot";
+        private static readonly string currentDirectory = Directory.GetCurrentDirectory();
+        public static string CreateDirectory(string mediaDirectoryName, string id)
         {
-            string mediaPath = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                staticFilesDirectoryName,
-                id,
-                mediaDirectoryName
-                );
+            string mediaPath = Path.Combine(currentDirectory, staticFilesDirectoryName, mediaDirectoryName, id);
             if (!Directory.Exists(mediaPath))
             {
                 Directory.CreateDirectory(mediaPath);
             }
             return mediaPath;
         }
-        public static bool UploadMediaAsync
-            (string id, string mediaDirectoryName, string fileName, IFormFile media)
+        public static async Task<bool> UploadAsync(string directoryName, string id, IFormFile media, string? fileName = null)
         {
-            string filePath = Path.Combine(CreateDirectoryAsync(id, mediaDirectoryName), fileName);
             try
             {
-                FileStream fileStream = new(filePath, FileMode.Create)
-                {
-                    Position = 0
-                };
-                media.CopyTo(fileStream);
+                string filePath = Path.Combine(CreateDirectory(directoryName, id), (fileName ?? media.FileName));
+                FileStream fileStream = File.Create(filePath);
+                await media.CopyToAsync(fileStream);
                 fileStream.Close();
             }
             catch
@@ -39,15 +31,10 @@ namespace Infrastructure
             return true;
         }
 
-        public static bool DeleteMediaAsync(string id, string mediaDirectoryName, string fileName)
+        public static bool Delete(string mediaDirectoryName, string id, string fileName)
         {
             string FilePath =
-            Path.Combine(
-                Directory.GetCurrentDirectory(),
-                staticFilesDirectoryName,
-                id,
-                mediaDirectoryName,
-                fileName);
+            Path.Combine(currentDirectory, staticFilesDirectoryName, mediaDirectoryName, id, fileName);
             if (!File.Exists(FilePath))
                 return false;
             try
