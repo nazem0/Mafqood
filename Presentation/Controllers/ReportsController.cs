@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
 using Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Presentation.Controllers
 {
@@ -14,32 +11,34 @@ namespace Presentation.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly EntitiesContext _context;
 
-        public ReportsController(EntitiesContext context)
+        public ReportsController(EntitiesContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Reports
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Report>>> GetReports()
+        public async Task<ActionResult<IEnumerable<ReportViewDTO>>> GetReports()
         {
-          if (_context.Reports == null)
-          {
-              return NotFound();
-          }
-            return await _context.Reports.ToListAsync();
+            if (_context.Reports == null)
+            {
+                return NotFound();
+            }
+            return await _context.Reports.Select(r => _mapper.Map<ReportViewDTO>(r)).ToListAsync();
         }
 
         // GET: api/Reports/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Report>> GetReport(Guid id)
         {
-          if (_context.Reports == null)
-          {
-              return NotFound();
-          }
+            if (_context.Reports == null)
+            {
+                return NotFound();
+            }
             var report = await _context.Reports.FindAsync(id);
 
             if (report == null)
@@ -84,16 +83,17 @@ namespace Presentation.Controllers
         // POST: api/Reports
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Report>> PostReport(Report report)
+        public async Task<ActionResult<Report>> PostReport(ReportAdditionDTO report)
         {
-          if (_context.Reports == null)
-          {
-              return Problem("Entity set 'EntitiesContext.Reports'  is null.");
-          }
-            _context.Reports.Add(report);
+            Report? createdReport = _mapper.Map<ReportAdditionDTO, Report>(report);
+            foreach(IFormFile file in report.ReportAttachments)
+            {
+                FileStorageHelper.UploadMediaAsync(createdReport.Id,)
+            }
+            _context.Reports.Add(createdReport);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReport", new { id = report.Id }, report);
+            return CreatedAtAction("GetReport", new { id = createdReport.Id }, report);
         }
 
         // DELETE: api/Reports/5
