@@ -1,4 +1,5 @@
 using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 public class Program

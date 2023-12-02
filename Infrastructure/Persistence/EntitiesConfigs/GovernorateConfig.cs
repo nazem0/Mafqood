@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.EntitiesConfigs
+namespace Infrastructure.Persistence.EntitiesConfigs
 {
     public class GovernorateConfig : IEntityTypeConfiguration<Governorate>
     {

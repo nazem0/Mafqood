@@ -1,12 +1,12 @@
 ﻿using Domain.Entities;
 using Infrastructure.Configs;
 using Infrastructure.EntitiesConfigs;
-using Infrastructure.Seedings;
+using Infrastructure.DataSeeding;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure
+namespace Infrastructure.Persistence
 {
     public class EntitiesContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {

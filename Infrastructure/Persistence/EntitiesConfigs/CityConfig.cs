@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.EntitiesConfigs
+namespace Infrastructure.Persistence.EntitiesConfigs
 {
     internal class CityConfig : IEntityTypeConfiguration<City>
     {

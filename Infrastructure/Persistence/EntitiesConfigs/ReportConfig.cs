@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configs
+namespace Infrastructure.Persistence.EntitiesConfigs
 {
     public class ReportConfig : IEntityTypeConfiguration<Report>
     {

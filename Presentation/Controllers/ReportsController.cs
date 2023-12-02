@@ -2,6 +2,7 @@
 using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
 using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
