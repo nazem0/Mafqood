@@ -20,6 +20,7 @@ namespace Infrastructure
         {
             builder
                 .ApplyConfiguration(new ReportConfig())
+                .ApplyConfiguration(new AttachmentConfig())
                 .ApplyConfiguration(new GovernorateConfig())
                 .ApplyConfiguration(new CityConfig())
                 .SeedRoles()
