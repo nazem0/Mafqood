@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.DTOs.ReportDTOs
 {
@@ -34,5 +35,6 @@ namespace Domain.DTOs.ReportDTOs
         public string? AdditionalInfo { get; set; }
         [MaxLength(32)]
         public required string DeletionCode { get; set; }
+        public required IFormFileCollection ReportAttachments { get; set; }
     }
 }
