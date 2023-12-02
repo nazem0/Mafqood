@@ -18,9 +18,9 @@
         public DateTime DateTime { get; set; }
         public required string ContactNumber { get; set; }
         public string? AdditionalInfo { get; set; }
-        public bool Valid { get; set; } // false by default
-        public bool Missing { get; set; } // false by default
-        public string DeletionCode { get; set; } // pass to delete report
+        public bool Valid { get; set; } = false; // false by default
+        public bool Missing { get; set; } = false; // false by default
+        public required string DeletionCode { get; set; } // pass to delete report
         public virtual ICollection<Attachment> Attachments { get; set; }
         public virtual City City { get; set; }
     }
