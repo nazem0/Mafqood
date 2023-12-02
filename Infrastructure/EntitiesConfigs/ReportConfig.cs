@@ -17,26 +17,29 @@ namespace Infrastructure.Configs
                 .ValueGeneratedOnAdd();
 
             builder
-               .Property(u => u.Name)
+               .Property(r => r.Name)
                 .HasMaxLength(200);
 
+
             builder
-                .Property(u => u.Street)
+                .Property(r => r.Street)
                 .HasMaxLength(255);
 
             builder
-                .Property(u => u.District)
-                .HasMaxLength(100)
-                .IsRequired();
+                .Property(r => r.District)
+                .HasMaxLength(100);
 
             builder
-                .Property(u => u.ContactNumber)
-                .HasMaxLength(19)
-                .IsRequired();
+                .Property(r => r.ContactNumber)
+                .HasMaxLength(19);
 
             builder
-                .Property(u => u.AdditionalInfo)
+                .Property(r => r.AdditionalInfo)
                 .HasMaxLength(1500);
+
+            builder
+                .Property(r => r.DeletionCode)
+                .HasMaxLength(32);
 
             builder
                 .HasMany(r => r.Attachments)
