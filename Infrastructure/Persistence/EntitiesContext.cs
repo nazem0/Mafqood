@@ -1,7 +1,6 @@
 ﻿using Domain.Entities;
-using Infrastructure.Configs;
-using Infrastructure.EntitiesConfigs;
 using Infrastructure.DataSeeding;
+using Infrastructure.Persistence.EntitiesConfigs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
