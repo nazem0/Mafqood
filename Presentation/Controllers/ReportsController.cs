@@ -6,7 +6,9 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
@@ -85,7 +87,7 @@ namespace Presentation.Controllers
         // POST: api/Reports
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ReportViewDTO>> PostReport([FromForm]ReportAdditionDTO Report)
+        public async Task<ActionResult<ReportViewDTO>> PostReport([FromForm] ReportAdditionDTO Report)
         {
             if (!ModelState.IsValid)
             {
@@ -118,7 +120,7 @@ namespace Presentation.Controllers
 
         // DELETE: api/Reports/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReport(Guid id)
+        public async Task<IActionResult> DeleteReport(Guid id, string deletionCode)
         {
             if (_context.Reports == null)
             {
@@ -129,9 +131,24 @@ namespace Presentation.Controllers
             {
                 return NotFound();
             }
-
-            _context.Reports.Remove(report);
-            await _context.SaveChangesAsync();
+            if (deletionCode == report.DeletionCode)
+            {
+                report.Missing = false;
+                _context.Reports.Update(report);
+                var attachments = _context.Attachments.Where(a => a.ReportId == report.Id);
+                if (attachments.Any())
+                {
+                    foreach (var attachment in attachments)
+                    {
+                        _context.Attachments.Remove(attachment);
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                return Forbid();
+            }
 
             return NoContent();
         }
