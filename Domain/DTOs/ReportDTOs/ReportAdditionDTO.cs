@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Validators;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.DTOs.ReportDTOs
@@ -33,8 +34,9 @@ namespace Domain.DTOs.ReportDTOs
         public required string ContactNumber { get; set; }
         [MaxLength(1500)]
         public string? AdditionalInfo { get; set; }
-        [MaxLength(32)]
+        [Required, MaxLength(32)]
         public required string DeletionCode { get; set; }
+        [Required, OnlyImageFormFileType, MaxFormFileCollectionCount(3), MaxFormFileCollectionSize(10)]
         public required IFormFileCollection ReportAttachments { get; set; }
     }
 }
