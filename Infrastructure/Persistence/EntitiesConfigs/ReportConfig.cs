@@ -13,10 +13,6 @@ namespace Infrastructure.Persistence.EntitiesConfigs
                 .HasKey(r => r.Id);
 
             builder
-                .Property(r => r.Id)
-                .ValueGeneratedOnAdd();
-
-            builder
                .Property(r => r.Name)
                 .HasMaxLength(200);
 
