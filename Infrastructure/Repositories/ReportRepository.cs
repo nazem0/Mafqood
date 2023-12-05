@@ -80,7 +80,6 @@ namespace Infrastructure.Repositories
             if (deletionCode != report.DeletionCode)
                 throw new UnauthorizedAccessException("كود الحذف الذي قمت بإدخاله غير صحيح");
             report.Missing = false;
-            report.Attachments.Clear();
             _reports.Update(report);
             bool deletionResult = Convert.ToBoolean(await _unitOfWork.SaveChangesAsync());
             return deletionResult;
