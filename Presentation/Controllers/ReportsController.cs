@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
+using Domain.IRepositories;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,10 @@ namespace Presentation.Controllers
     public class ReportsController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly EntitiesContext _context;
-        public ReportsController(EntitiesContext context, IMapper mapper)
+        private readonly IReportRepository _reportRepository;
+        public ReportsController(IReportRepository reportRepository, IMapper mapper)
         {
-            _context = context;
+            _reportRepository = reportRepository;
             _mapper = mapper;
         }
 
@@ -23,134 +24,49 @@ namespace Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReportViewDTO>>> GetReports()
         {
-            if (_context.Reports == null)
-            {
-                return NotFound();
-            }
-            return await _context.Reports.Select(r => _mapper.Map<ReportViewDTO>(r)).ToListAsync();
+            IEnumerable<Report> reports = await _reportRepository.GetAsync();
+            IEnumerable<ReportViewDTO> reportsList = reports.Select(_mapper.Map<ReportViewDTO>);
+            return Ok(reportsList);
         }
 
-        // GET: api/Reports/5
+        //GET: api/Reports/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ReportViewDTO>> GetReport(Guid id)
         {
-            if (_context.Reports == null)
-            {
-                return NotFound();
-            }
-            var report = await _context.Reports.FindAsync(id);
+            Report? report = await _reportRepository.GetByIdAsync(id);
 
-            if (report == null)
-            {
+            if (report is null)
                 return NotFound();
-            }
 
-            return _mapper.Map<ReportViewDTO>(report);
+            return Ok(_mapper.Map<ReportViewDTO>(report));
         }
-        #region Update Action (NOT USED)
-        // PUT: api/Reports/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutReport(Guid id, Report report)
-        //{
-        //    if (id != report.Id)
-        //    {
-        //        return BadRequest();
-        //    }
 
-        //    _context.Entry(report).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ReportExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-        #endregion
         // POST: api/Reports
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ReportViewDTO>> PostReport([FromForm] ReportAdditionDTO Report)
+        public async Task<ActionResult<ReportViewDTO>> PostReport([FromForm] ReportAdditionDTO report)
         {
             if (!ModelState.IsValid)
             {
                 var errorList = ModelState.SelectMany(ms => ms.Value.Errors.Select(e => new { Field = ms.Key, Error = e.ErrorMessage })).ToList();
                 return BadRequest(errorList);
             }
-            Report? createdReport = _mapper.Map<Report>(Report);
-            //Directory Existence Checking
-            string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Report", createdReport.Id.ToString());
-            if (!Directory.Exists(DirectoryPath))
-                Directory.CreateDirectory(DirectoryPath);
-            await _context.Reports.AddAsync(createdReport);
-            foreach (IFormFile file in Report.ReportAttachments)
-            {
-                FileInfo fi = new(file.FileName);
-                string fileName = DateTime.Now.Ticks + fi.Extension;
-                string filePath = Path.Combine(DirectoryPath, fileName);
-                FileStream fileStream = System.IO.File.Create(filePath);
-                await file.CopyToAsync(fileStream);
-                createdReport.Attachments.Add(new Attachment
-                {
-                    Name = fileName,
-                    ReportId = createdReport.Id
-                });
-            }
-            await _context.SaveChangesAsync();
 
-            return Ok(_mapper.Map<ReportViewDTO>(createdReport));
+            bool reportAddition = await _reportRepository.AddAsync(report);
+            return reportAddition ? Ok() : BadRequest();
         }
 
         // DELETE: api/Reports/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReport(Guid id, string deletionCode)
         {
-            if (_context.Reports == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
-            }
-            var report = await _context.Reports.FindAsync(id);
-            if (report == null)
-            {
-                return NotFound();
-            }
-            if (deletionCode == report.DeletionCode)
-            {
-                report.Missing = false;
-                _context.Reports.Update(report);
-                var attachments = _context.Attachments.Where(a => a.ReportId == report.Id);
-                if (attachments.Any())
-                {
-                    foreach (var attachment in attachments)
-                    {
-                        _context.Attachments.Remove(attachment);
-                    }
-                }
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                return Forbid();
+                var errorList = ModelState.SelectMany(ms => ms.Value.Errors.Select(e => new { Field = ms.Key, Error = e.ErrorMessage })).ToList();
+                return BadRequest(errorList);
             }
 
-            return NoContent();
-        }
-
-        private bool ReportExists(Guid id)
-        {
-            return (_context.Reports?.Any(e => e.Id == id)).GetValueOrDefault();
+            bool reportDeletion = await _reportRepository.DeleteAsync(id, deletionCode);
+            return reportDeletion ? Ok() : BadRequest();
         }
     }
 }

@@ -1,6 +1,12 @@
 using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Serilog;
+using Domain.IRepositories;
+using Infrastructure.Repositories;
+using Domain;
 
 public class Program
 {
@@ -8,27 +14,42 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddAutoMapper(typeof(MappingProfiles));
-        builder.Services.AddControllers();
-        builder.Services.AddDbContext<EntitiesContext>(context =>
+        builder.Host.UseSerilog((context, configuration) =>
         {
-            context
+            configuration.ReadFrom.Configuration(context.Configuration);
+        });
+        builder.Services.AddAutoMapper(typeof(MappingProfiles));
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<IReportRepository, ReportRepository>();
+        builder.Services.AddDbContext<EntitiesContext>(dbContext =>
+        {
+            dbContext
             .UseLazyLoadingProxies()
             .UseSqlServer
             (builder.Configuration.GetConnectionString("MyDB"),
             c => c.EnableRetryOnFailure());
-
-            //context
+            #region SamerDB
+            //dbContext
             //.UseLazyLoadingProxies()
             //.UseSqlServer
             //(builder.Configuration.GetConnectionString("MySamer"),
             //c => c.EnableRetryOnFailure());
+            #endregion
         });
+        builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         var app = builder.Build();
+        var supportedCultures = new[] { new CultureInfo("ar-EG") }; // for Arabic
+        app.UseRequestLocalization(new RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new RequestCulture("ar-EG"),
+            SupportedCultures = supportedCultures,
+            SupportedUICultures = supportedCultures
+        });
         app.UseStaticFiles();
+        app.UseSerilogRequestLogging();
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
