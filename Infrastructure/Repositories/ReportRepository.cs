@@ -74,9 +74,9 @@ namespace Infrastructure.Repositories
             return additionResult;
         }
 
-        public async Task<bool> DeleteAsync(Guid id, string deletionCode)
+        public async Task<bool> SoftDeleteAsync(Guid id, string deletionCode)
         {
-            var report = await _reports.FindAsync(id) ?? throw new KeyNotFoundException($"لا يوجد تقرير بالرقم '{id}'");
+            var report = await _reports.FindAsync(id) ?? throw new KeyNotFoundException();
             if (deletionCode != report.DeletionCode)
                 throw new UnauthorizedAccessException("كود الحذف الذي قمت بإدخاله غير صحيح");
             report.Missing = false;
@@ -85,9 +85,24 @@ namespace Infrastructure.Repositories
             return deletionResult;
         }
 
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var report = await _reports.FindAsync(id) ?? throw new KeyNotFoundException();
+            string directoryPath = Path.Combine
+                (Directory.GetCurrentDirectory(), "wwwroot", "Report", report.Id.ToString());
+            if (!Directory.Exists(directoryPath))
+                Directory.Delete(directoryPath, true);
+            bool deletionResult = Convert.ToBoolean(await _unitOfWork.SaveChangesAsync());
+            return deletionResult;
+        }
         public async Task<bool> ExistsAsync(Guid id)
         {
             return await _reports.AnyAsync(e => e.Id == id);
+        }
+
+        public async Task<IEnumerable<Report>> GetAllAsync()
+        {
+            return await _reports.IgnoreQueryFilters().ToListAsync();
         }
         // Implement other interface methods as needed
     }

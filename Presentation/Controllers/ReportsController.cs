@@ -3,6 +3,7 @@ using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
 using Domain.IRepositories;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,14 @@ namespace Presentation.Controllers
         public async Task<ActionResult<IEnumerable<ReportViewDTO>>> GetReports()
         {
             IEnumerable<Report> reports = await _reportRepository.GetAsync();
+            IEnumerable<ReportViewDTO> reportsList = reports.Select(_mapper.Map<ReportViewDTO>);
+            return Ok(reportsList);
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<ReportViewDTO>>> GetAll()
+        {
+            IEnumerable<Report> reports = await _reportRepository.GetAllAsync();
             IEnumerable<ReportViewDTO> reportsList = reports.Select(_mapper.Map<ReportViewDTO>);
             return Ok(reportsList);
         }
@@ -57,7 +66,7 @@ namespace Presentation.Controllers
 
         // DELETE: api/Reports/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReport(Guid id, string deletionCode)
+        public async Task<IActionResult> SoftDeleteReport(Guid id, string deletionCode)
         {
             if (!ModelState.IsValid)
             {
@@ -65,7 +74,18 @@ namespace Presentation.Controllers
                 return BadRequest(errorList);
             }
 
-            bool reportDeletion = await _reportRepository.DeleteAsync(id, deletionCode);
+            bool reportDeletion = await _reportRepository.SoftDeleteAsync(id, deletionCode);
+            return reportDeletion ? Ok() : BadRequest();
+        }
+        [HttpDelete("Delete/{id}"), Authorize(Roles = "admin")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorList = ModelState.SelectMany(ms => ms.Value.Errors.Select(e => new { Field = ms.Key, Error = e.ErrorMessage })).ToList();
+                return BadRequest(errorList);
+            }
+            bool reportDeletion = await _reportRepository.DeleteAsync(id);
             return reportDeletion ? Ok() : BadRequest();
         }
     }
