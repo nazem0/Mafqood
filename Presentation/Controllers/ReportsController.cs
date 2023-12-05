@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
-using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
