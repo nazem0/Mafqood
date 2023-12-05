@@ -2,7 +2,6 @@ using Domain;
 using Domain.IRepositories;
 using Infrastructure;
 using Infrastructure.Persistence;
-using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -10,37 +9,56 @@ using System.Globalization;
 
 public class Program
 {
-
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        ConfigureLogging(builder);
+        ConfigureServices(builder.Services, builder);
+
+        var app = builder.Build();
+        ConfigureApp(app);
+        RunApplication(app);
+    }
+
+    private static void ConfigureLogging(WebApplicationBuilder builder)
+    {
         builder.Host.UseSerilog((context, configuration) =>
         {
             configuration.ReadFrom.Configuration(context.Configuration);
         });
-        builder.Services.AddAutoMapper(typeof(MappingProfiles));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-        builder.Services.AddScoped<IReportRepository, ReportRepository>();
-        builder.Services.AddDbContext<EntitiesContext>(dbContext =>
-        {
-            dbContext
-            .UseLazyLoadingProxies()
-            .UseSqlServer
-            (builder.Configuration.GetConnectionString("MyDB"),
-            c => c.EnableRetryOnFailure());
-            #region SamerDB
-            //dbContext
-            //.UseLazyLoadingProxies()
-            //.UseSqlServer
-            //(builder.Configuration.GetConnectionString("MySamer"),
-            //c => c.EnableRetryOnFailure());
-            #endregion
-        });
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        var app = builder.Build();
+    }
+
+    private static void ConfigureServices(IServiceCollection services, WebApplicationBuilder builder)
+    {
+        services.InfrastructureDependencyInjection()
+                .AddDbContext<EntitiesContext>(dbContext =>
+                {
+                    #region NazemDB
+                    dbContext
+                        .UseLazyLoadingProxies()
+                        .UseSqlServer
+                        (builder.Configuration.GetConnectionString("MyDB"),
+                        c => c.EnableRetryOnFailure());
+                    #endregion
+                    #region SamerDB
+                    //dbContext
+                    //.UseLazyLoadingProxies()
+                    //.UseSqlServer
+                    //(builder.Configuration.GetConnectionString("MySamer"),
+                    //c => c.EnableRetryOnFailure());
+                    #endregion
+                })
+                .AddHttpContextAccessor()
+                .AddControllers();
+
+        services.AddEndpointsApiExplorer()
+                .AddSwaggerGen();
+
+        // Additional service configurations...
+    }
+
+    private static void ConfigureApp(WebApplication app)
+    {
         var supportedCultures = new[] { new CultureInfo("ar-EG") }; // for Arabic
         app.UseRequestLocalization(new RequestLocalizationOptions
         {
@@ -48,22 +66,19 @@ public class Program
             SupportedCultures = supportedCultures,
             SupportedUICultures = supportedCultures
         });
-        app.UseStaticFiles();
-        app.UseSerilogRequestLogging();
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
 
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
+        app.UseStaticFiles()
+           .UseSerilogRequestLogging()
+           .UseSwagger()
+           .UseSwaggerUI()
+           .UseHttpsRedirection()
+           .UseAuthorization();
 
         app.MapControllers();
+    }
 
+    private static void RunApplication(WebApplication app)
+    {
         app.Run();
-
     }
 }
