@@ -41,6 +41,9 @@ namespace Infrastructure.Persistence.EntitiesConfigs
                 .HasMany(r => r.Attachments)
                 .WithOne(a => a.Report)
                 .HasForeignKey(a => a.ReportId);
+
+            builder
+                .HasQueryFilter(r => r.Missing && r.Valid);
         }
     }
 }
