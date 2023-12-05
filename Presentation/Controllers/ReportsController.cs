@@ -2,10 +2,8 @@
 using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
 using Domain.IRepositories;
-using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Presentation.Controllers
 {

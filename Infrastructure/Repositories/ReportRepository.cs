@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Castle.Core.Logging;
 using Domain;
 using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
@@ -8,13 +7,6 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Serilog.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {

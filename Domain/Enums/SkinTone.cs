@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums
 {
-    public enum SkinTone:byte
+    public enum SkinTone : byte
     {
         White = 1,
         Brown,

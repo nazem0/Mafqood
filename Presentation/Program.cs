@@ -1,12 +1,12 @@
+using Domain;
+using Domain.IRepositories;
 using Infrastructure;
 using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Localization;
-using System.Globalization;
-using Serilog;
-using Domain.IRepositories;
 using Infrastructure.Repositories;
-using Domain;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System.Globalization;
 
 public class Program
 {
