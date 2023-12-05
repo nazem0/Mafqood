@@ -13,3 +13,5 @@
 **/obj/
 **/Migrations/
 **/wwwroot/**
+**/Log/**
+**/Logs/**
