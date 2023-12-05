@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs.AttachmentDTOs;
 using Domain.DTOs.CityDTOs;
+using Domain.Enums;
 
 namespace Domain.DTOs.ReportDTOs
 {
@@ -8,14 +9,15 @@ namespace Domain.DTOs.ReportDTOs
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public bool Gender { get; set; }
-        public int SkinTone { get; set; }
-        public int HairType { get; set; }
-        public int HairColor { get; set; }
-        public int EyeColor { get; set; }
-        public int HeightLevel { get; set; }
-        public int WeightLevel { get; set; }
-        public int? MinAge { get; set; }
-        public int? MaxAge { get; set; }
+        public SkinTone SkinTone { get; set; }
+        public HairType HairType { get; set; }
+        public bool FacialHair { get; set; }
+        public HairColor HairColor { get; set; }
+        public EyeColor EyeColor { get; set; }
+        public HeightLevel HeightLevel { get; set; }
+        public WeightLevel WeightLevel { get; set; }
+        public byte? MinAge { get; set; }
+        public byte? MaxAge { get; set; }
         public string? Street { get; set; }
         public string? District { get; set; }
         public DateTime DateTime { get; set; }

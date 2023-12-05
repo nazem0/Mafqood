@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums
 {
-    public enum HeightLevel
+    public enum HeightLevel : byte
     {
         Short = 1,
         Regular,

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums
 {
-    public enum EyeColor
+    public enum EyeColor : byte
     {
         Brown = 1,
         Blue,
@@ -9,6 +9,7 @@
         Red,
         Violet,
         Black,
-        Multicolored
+        Multicolored,
+        Other
     }
 }

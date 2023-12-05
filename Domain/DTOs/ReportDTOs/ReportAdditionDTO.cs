@@ -1,4 +1,5 @@
-﻿using Domain.Validators;
+﻿using Domain.Enums;
+using Domain.Validators;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,32 +12,34 @@ namespace Domain.DTOs.ReportDTOs
         [Required]
         public bool Gender { get; set; }
         [Required]
-        public int SkinTone { get; set; }
+        public SkinTone SkinTone { get; set; }
         [Required]
-        public int HairType { get; set; }
+        public HairType HairType { get; set; }
         [Required]
-        public int HairColor { get; set; }
+        public bool FacialHair { get; set; }
         [Required]
-        public int EyeColor { get; set; }
+        public HairColor HairColor { get; set; }
         [Required]
-        public int HeightLevel { get; set; }
+        public EyeColor EyeColor { get; set; }
         [Required]
-        public int WeightLevel { get; set; }
-        public int? MinAge { get; set; }
-        public int? MaxAge { get; set; }
+        public HeightLevel HeightLevel { get; set; }
+        [Required]
+        public WeightLevel WeightLevel { get; set; }
+        public byte? MinAge { get; set; }
+        public byte? MaxAge { get; set; }
         public string? Street { get; set; }
         public string? District { get; set; }
         [Required]
         public int CityId { get; set; }
         [Required]
         public DateTime DateTime { get; set; }
-        [Required, RegularExpression("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}")]
+        [Required, DataType(DataType.PhoneNumber), RegularExpression("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}")]
         public required string ContactNumber { get; set; }
         [MaxLength(1500)]
         public string? AdditionalInfo { get; set; }
-        [Required, MaxLength(32)]
+        [Required, DataType(DataType.Password), MaxLength(32)]
         public required string DeletionCode { get; set; }
-        [Required, OnlyImageFormFileType, MaxFormFileCollectionCount(3), MaxFormFileCollectionSize(10)]
+        [Required, DataType(DataType.Upload), OnlyImageFormFileType, MaxFormFileCollectionCount(3), MaxFormFileCollectionSize(10)]
         public required IFormFileCollection ReportAttachments { get; set; }
     }
 }

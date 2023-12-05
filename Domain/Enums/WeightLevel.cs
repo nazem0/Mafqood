@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums
 {
-    public enum WeightLevel
+    public enum WeightLevel:byte
     {
         Below = 1,
         Regular,
