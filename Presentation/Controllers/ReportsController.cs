@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
-using Domain.IRepositories;
+using Domain.Interfaces.IRepositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,3 @@
-using Domain;
-using Domain.IRepositories;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Localization;

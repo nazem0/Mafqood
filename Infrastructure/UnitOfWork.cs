@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Interfaces;
 using Infrastructure.Persistence;
 
 namespace Infrastructure

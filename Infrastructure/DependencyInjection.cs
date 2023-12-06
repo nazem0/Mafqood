@@ -1,6 +1,4 @@
-﻿using Domain.IRepositories;
-using Domain;
-using Infrastructure.Persistence;
+﻿using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -9,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Domain.Interfaces.IRepositories;
+using Domain.Interfaces;
 
 namespace Infrastructure
 {

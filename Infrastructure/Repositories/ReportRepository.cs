@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Domain;
 using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
-using Domain.IRepositories;
+using Domain.Interfaces;
+using Domain.Interfaces.IRepositories;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +56,7 @@ namespace Infrastructure.Repositories
                 string filePath = Path.Combine(directoryPath, fileName);
                 FileStream fileStream = File.Create(filePath);
                 await file.CopyToAsync(fileStream);
+                await fileStream.DisposeAsync();
                 createdReport.Attachments.Add(new Attachment
                 {
                     Name = fileName,

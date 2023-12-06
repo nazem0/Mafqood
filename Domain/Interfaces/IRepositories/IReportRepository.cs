@@ -1,7 +1,7 @@
 ﻿using Domain.DTOs.ReportDTOs;
 using Domain.Entities;
 
-namespace Domain.IRepositories
+namespace Domain.Interfaces.IRepositories
 {
     public interface IReportRepository
     {
