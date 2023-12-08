@@ -28,9 +28,10 @@ namespace Infrastructure.Repositories
             _reports = context.Set<Report>();
         }
 
-        public async Task<IEnumerable<Report>> GetAsync()
+        public IEnumerable<Report> Get(ReportFiltrationDTO? filter = null)
         {
-            return await _reports.ToListAsync();
+            return _reports;
+            //return filter is null ? _reports : _reports.Where(r => ReportFiltration(r, filter));
         }
 
         public async Task<Report?> GetByIdAsync(Guid id)
@@ -90,13 +91,14 @@ namespace Infrastructure.Repositories
         }
         public async Task<bool> ExistsAsync(Guid id)
         {
-            return await _reports.AnyAsync(e => e.Id == id);
+            return await _reports.AnyAsync(r => r.Id == id);
         }
 
-        public async Task<IEnumerable<Report>> GetAllAsync()
+        public IEnumerable<Report> GetAll()
         {
-            return await _reports.IgnoreQueryFilters().ToListAsync();
+            return _reports.IgnoreQueryFilters();
         }
+
         // Implement other interface methods as needed
     }
 

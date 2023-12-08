@@ -5,8 +5,8 @@ namespace Domain.Interfaces.IRepositories
 {
     public interface IReportRepository
     {
-        Task<IEnumerable<Report>> GetAsync();
-        Task<IEnumerable<Report>> GetAllAsync();
+        IEnumerable<Report> Get(ReportFiltrationDTO? filter = null);
+        IEnumerable<Report> GetAll();
         Task<Report?> GetByIdAsync(Guid id);
         Task<bool> AddAsync(ReportAdditionDTO report);
         Task<bool> SoftDeleteAsync(Guid id, string deletionCode);
