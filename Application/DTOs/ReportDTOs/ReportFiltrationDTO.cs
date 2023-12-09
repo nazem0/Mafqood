@@ -1,9 +1,16 @@
-﻿using Domain.Enums;
+﻿using Domain.Entities;
+using Domain.Enums;
+using static System.Net.Mime.MediaTypeNames;
+using System.IO;
+using System.Reflection;
+using System.Xml.Linq;
+using System.Linq.Expressions;
 
-namespace Domain.DTOs.ReportDTOs
+namespace Application.DTOs.ReportDTOs
 {
     public class ReportFiltrationDTO
     {
+        public string? Keyword { get; set; }
         public string? Name { get; set; }
         public bool? Gender { get; set; }
         public SkinTone? SkinTone { get; set; }
@@ -17,6 +24,7 @@ namespace Domain.DTOs.ReportDTOs
         public byte? MaxAge { get; set; }
         public string? Street { get; set; }
         public string? District { get; set; }
+        public int? GovernorateId { get; set; }
         public int? CityId { get; set; }
         public DateTime? DateTime { get; set; }
     }

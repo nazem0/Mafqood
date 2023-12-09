@@ -1,9 +1,9 @@
 ﻿using Domain.Enums;
-using Domain.Validators;
+using Application.Validators;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.DTOs.ReportDTOs
+namespace Application.DTOs.ReportDTOs
 {
     public class ReportAdditionDTO
     {

@@ -1,11 +1,11 @@
 ﻿using Domain.Entities;
-using Infrastructure.DataSeeding;
-using Infrastructure.Persistence.EntitiesConfigs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Persistence.DataSeeding;
+using Persistence.EntitiesConfigs;
 
-namespace Infrastructure.Persistence
+namespace Persistence
 {
     public class EntitiesContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
@@ -29,20 +29,20 @@ namespace Infrastructure.Persistence
 
             base.OnModelCreating(builder);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseLazyLoadingProxies()
-                .UseSqlServer(@"Data Source=.; Initial Catalog=Mafqood; 
-                    Integrated Security=True; TrustServerCertificate=True");
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder
+        //        .UseLazyLoadingProxies()
+        //        .UseSqlServer(@"Data Source=.; Initial Catalog=Mafqood; 
+        //            Integrated Security=True; TrustServerCertificate=True");
 
-            //optionsBuilder
-            //    .UseLazyLoadingProxies()
-            //    .UseSqlServer(@"Data Source=localhost; Initial Catalog=Mafqood;
-            //        TrustServerCertificate=True; User Id=SA; Password=$aMer2030");
+        //    //optionsBuilder
+        //    //    .UseLazyLoadingProxies()
+        //    //    .UseSqlServer(@"Data Source=localhost; Initial Catalog=Mafqood;
+        //    //        TrustServerCertificate=True; User Id=SA; Password=$aMer2030");
 
-            base.OnConfiguring(optionsBuilder);
-        }
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
     }
 }

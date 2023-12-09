@@ -1,13 +1,14 @@
-﻿using Domain.DTOs.ReportDTOs;
+﻿using Application.DTOs.ReportDTOs;
+using Domain.DTOs;
 using Domain.Entities;
 
-namespace Domain.Interfaces.IRepositories
+namespace Application.Interfaces.IRepositories
 {
     public interface IReportRepository
     {
-        IEnumerable<Report> Get(ReportFiltrationDTO? filter = null);
-        IEnumerable<Report> GetAll();
-        Task<Report?> GetByIdAsync(Guid id);
+        PaginationViewDTO<ReportViewDTO> Get(int pageIndex, int pageSize, ReportFiltrationDTO filter);
+        PaginationViewDTO<ReportViewDTO> GetAll(int pageIndex, int pageSize, ReportFiltrationDTO filter);
+        Task<ReportViewDTO?> GetByIdAsync(Guid id);
         Task<bool> AddAsync(ReportAdditionDTO report);
         Task<bool> SoftDeleteAsync(Guid id, string deletionCode);
         Task<bool> DeleteAsync(Guid id);

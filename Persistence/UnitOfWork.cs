@@ -1,7 +1,6 @@
-﻿using Domain.Interfaces;
-using Infrastructure.Persistence;
+﻿using Application.Interfaces;
 
-namespace Infrastructure
+namespace Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {

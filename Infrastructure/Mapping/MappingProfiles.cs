@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Domain.DTOs.AttachmentDTOs;
-using Domain.DTOs.CityDTOs;
-using Domain.DTOs.GovernorateDTOs;
-using Domain.DTOs.ReportDTOs;
+using Application.DTOs.AttachmentDTOs;
+using Application.DTOs.CityDTOs;
+using Application.DTOs.GovernorateDTOs;
+using Application.DTOs.ReportDTOs;
 using Domain.Entities;
 
-namespace Infrastructure
+namespace Infrastructure.Mapping
 {
     public class MappingProfiles : Profile
     {

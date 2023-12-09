@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.EntitiesConfigs
+namespace Persistence.EntitiesConfigs
 {
     public class AttachmentConfig : IEntityTypeConfiguration<Attachment>
     {

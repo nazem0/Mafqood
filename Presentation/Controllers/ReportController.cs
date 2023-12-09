@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using Domain.DTOs.ReportDTOs;
+﻿using Application.DTOs.ReportDTOs;
 using Domain.Entities;
-using Domain.Interfaces.IRepositories;
+using Application.Interfaces.IRepositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,28 +10,22 @@ namespace Presentation.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IReportRepository _reportRepository;
-        public ReportController(IMapper mapper, IReportRepository reportRepository)
+        public ReportController(IReportRepository reportRepository)
         {
-            _mapper = mapper;
             _reportRepository = reportRepository;
         }
         //GET: api/Reports/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ReportViewDTO>> GetReport(Guid id)
         {
-            Report? report = await _reportRepository.GetByIdAsync(id);
-
-            if (report is null)
-                return NotFound();
-
-            return Ok(_mapper.Map<ReportViewDTO>(report));
+            ReportViewDTO? report = await _reportRepository.GetByIdAsync(id);
+            return report is null ? NotFound() : Ok(report);
         }
 
         // POST: api/Reports
         [HttpPost]
-        public async Task<ActionResult<ReportViewDTO>> PostReport([FromForm] ReportAdditionDTO report)
+        public async Task<IActionResult> PostReport([FromForm] ReportAdditionDTO report)
         {
             if (!ModelState.IsValid)
             {

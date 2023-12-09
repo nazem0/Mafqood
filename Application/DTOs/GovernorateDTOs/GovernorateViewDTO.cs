@@ -1,4 +1,4 @@
-﻿namespace Domain.DTOs.GovernorateDTOs
+﻿namespace Application.DTOs.GovernorateDTOs
 {
     public class GovernorateViewDTO
     {

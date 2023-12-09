@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.DataSeeding
+namespace Persistence.DataSeeding
 {
     public static class CitySeeding
     {

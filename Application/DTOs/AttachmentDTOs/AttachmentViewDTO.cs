@@ -1,4 +1,4 @@
-﻿namespace Domain.DTOs.AttachmentDTOs
+﻿namespace Application.DTOs.AttachmentDTOs
 {
     public class AttachmentViewDTO
     {

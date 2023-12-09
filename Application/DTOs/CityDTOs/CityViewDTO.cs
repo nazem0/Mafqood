@@ -1,6 +1,6 @@
-﻿using Domain.DTOs.GovernorateDTOs;
+﻿using Application.DTOs.GovernorateDTOs;
 
-namespace Domain.DTOs.CityDTOs
+namespace Application.DTOs.CityDTOs
 {
     public class CityViewDTO
     {

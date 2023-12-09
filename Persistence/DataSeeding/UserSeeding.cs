@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.DataSeeding
+namespace Persistence.DataSeeding
 {
     public static class UserSeeding
     {

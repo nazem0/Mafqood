@@ -1,6 +1,6 @@
 ﻿using Domain.DTOs;
 
-namespace Infrastructure
+namespace Application.ExtensionMethods
 {
     public static class DataExtensions
     {

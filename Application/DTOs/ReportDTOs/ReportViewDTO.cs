@@ -1,8 +1,8 @@
-﻿using Domain.DTOs.AttachmentDTOs;
-using Domain.DTOs.CityDTOs;
+﻿using Application.DTOs.AttachmentDTOs;
+using Application.DTOs.CityDTOs;
 using Domain.Enums;
 
-namespace Domain.DTOs.ReportDTOs
+namespace Application.DTOs.ReportDTOs
 {
     public class ReportViewDTO
     {

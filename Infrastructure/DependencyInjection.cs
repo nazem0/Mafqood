@@ -1,7 +1,12 @@
-﻿using Domain.Interfaces;
-using Domain.Interfaces.IRepositories;
-using Infrastructure.Repositories;
+﻿using Application.Interfaces.IRepositories;
+using Application.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Infrastructure.Mapping;
 
 namespace Infrastructure
 {
@@ -9,9 +14,8 @@ namespace Infrastructure
     {
         public static IServiceCollection InfrastructureDependencyInjection(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(MappingProfiles))
-            .AddScoped<IUnitOfWork, UnitOfWork>()
-            .AddScoped<IReportRepository, ReportRepository>();
+            services
+            .AddAutoMapper(typeof(MappingProfiles));
             return services;
         }
     }

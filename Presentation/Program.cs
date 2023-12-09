@@ -1,10 +1,9 @@
 using Infrastructure;
-using Infrastructure.Persistence;
+using Persistence;
+using Serilog;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using System.Globalization;
-
 public class Program
 {
     public static void Main(string[] args)
@@ -29,14 +28,29 @@ public class Program
     private static void ConfigureServices(IServiceCollection services, WebApplicationBuilder builder)
     {
         services.InfrastructureDependencyInjection()
+                .PersistenceDependencyInjection()
                 .AddDbContext<EntitiesContext>(dbContext =>
                 {
-                    #region NazemDB
-                    dbContext
+                    try
+                    {
+                        dbContext
                         .UseLazyLoadingProxies()
                         .UseSqlServer
-                        (builder.Configuration.GetConnectionString("MyDB"),
-                        c => c.EnableRetryOnFailure());
+                        (builder.Configuration.GetConnectionString("MyDB"));
+                    }
+                    catch
+                    {
+                        dbContext
+                        .UseLazyLoadingProxies()
+                        .UseSqlServer
+                        (builder.Configuration.GetConnectionString("MySamer"));
+                    }
+                    #region NazemDB
+                    //dbContext
+                    //    .UseLazyLoadingProxies()
+                    //    .UseSqlServer
+                    //    (builder.Configuration.GetConnectionString("MyDB"),
+                    //    c => c.EnableRetryOnFailure());
                     #endregion
                     #region SamerDB
                     //dbContext
