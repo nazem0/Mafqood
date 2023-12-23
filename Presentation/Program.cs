@@ -54,10 +54,10 @@ public class Program
                     #endregion
                     #region SamerDB
                     //dbContext
-                    //.UseLazyLoadingProxies()
-                    //.UseSqlServer
-                    //(builder.Configuration.GetConnectionString("MySamer"),
-                    //c => c.EnableRetryOnFailure());
+                    //    .UseLazyLoadingProxies()
+                    //    .UseSqlServer
+                    //    (builder.Configuration.GetConnectionString("MySamer"),
+                    //    c => c.EnableRetryOnFailure());
                     #endregion
                 })
                 .AddHttpContextAccessor()

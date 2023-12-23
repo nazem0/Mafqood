@@ -48,6 +48,14 @@ namespace Persistence.Repositories
                 .OrderByDescending(r => r.DateTime)
                 .ToPaginationViewDTO(pageIndex, pageSize, _mapper.Map<ReportViewDTO>);
         }
+        public PaginationViewDTO<ReportViewDTO> GetUnvalid(int pageIndex, int pageSize)
+        {
+            return
+                _reports
+                .Where(r => r.Valid == false)
+                .OrderByDescending(r => r.DateTime)
+                .ToPaginationViewDTO(pageIndex, pageSize, _mapper.Map<ReportViewDTO>);
+        }
 
         public async Task<ReportViewDTO?> GetByIdAsync(Guid id)
         {
