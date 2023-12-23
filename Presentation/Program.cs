@@ -4,6 +4,10 @@ using Serilog;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 public class Program
 {
     public static void Main(string[] args)
@@ -66,6 +70,24 @@ public class Program
         services.AddEndpointsApiExplorer()
                 .AddSwaggerGen();
 
+        services.AddAuthentication(Option =>
+        {
+            Option.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            Option.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+            Option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(Options =>
+        {
+            Options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = false,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            };
+
+        });
         // Additional service configurations...
     }
 
@@ -84,8 +106,8 @@ public class Program
            .UseSwagger()
            .UseSwaggerUI()
            .UseHttpsRedirection()
+           .UseAuthentication()
            .UseAuthorization();
-
         app.MapControllers();
     }
 
