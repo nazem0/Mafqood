@@ -14,6 +14,7 @@ namespace Application.Interfaces.IRepositories
         Task<bool> SoftDeleteAsync(Guid id, string deletionCode);
         Task<bool> DeleteAsync(Guid id);
         Task<bool> ExistsAsync(Guid id);
+        Task<bool> ApproveAsync(Guid id);
         // Add other methods as needed
     }
 

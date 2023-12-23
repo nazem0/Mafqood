@@ -102,6 +102,15 @@ namespace Persistence.Repositories
             return deletionResult;
         }
 
+        public async Task<bool> ApproveAsync(Guid id)
+        {
+            var report = await _reports.FindAsync(id) ?? throw new KeyNotFoundException();
+            report.Valid = true;
+            _reports.Update(report);
+            bool approveResult = Convert.ToBoolean(await _unitOfWork.SaveChangesAsync());
+            return approveResult;
+        }
+
         public async Task<bool> DeleteAsync(Guid id)
         {
             var report = await _reports.FindAsync(id) ?? throw new KeyNotFoundException();
@@ -156,6 +165,7 @@ namespace Persistence.Repositories
                 (filter.CityId != null ? r.CityId == filter.CityId : true) &&
                 (filter.DateTime != null ? r.DateTime >= filter.DateTime : true);
         }
+
         // Implement other interface methods as needed
     }
 

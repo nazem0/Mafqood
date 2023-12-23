@@ -29,7 +29,10 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errorList = ModelState.SelectMany(ms => ms.Value!.Errors.Select(e => new { Field = ms.Key, Error = e.ErrorMessage })).ToList();
+                var errorList = ModelState
+                    .SelectMany(ms => ms.Value!.Errors
+                    .Select(e => new { Field = ms.Key, Error = e.ErrorMessage }))
+                    .ToList();
                 return BadRequest(errorList);
             }
 
@@ -43,23 +46,46 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errorList = ModelState.SelectMany(ms => ms.Value!.Errors.Select(e => new { Field = ms.Key, Error = e.ErrorMessage })).ToList();
+                var errorList = ModelState
+                    .SelectMany(ms => ms.Value!.Errors
+                    .Select(e => new { Field = ms.Key, Error = e.ErrorMessage }))
+                    .ToList();
                 return BadRequest(errorList);
             }
 
             bool reportDeletion = await _reportRepository.SoftDeleteAsync(id, deletionCode);
             return reportDeletion ? Ok() : BadRequest();
         }
+
         [HttpDelete("Delete/{id}"), Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (!ModelState.IsValid)
             {
-                var errorList = ModelState.SelectMany(ms => ms.Value!.Errors.Select(e => new { Field = ms.Key, Error = e.ErrorMessage })).ToList();
+                var errorList = ModelState
+                    .SelectMany(ms => ms.Value!.Errors
+                    .Select(e => new { Field = ms.Key, Error = e.ErrorMessage }))
+                    .ToList();
                 return BadRequest(errorList);
             }
             bool reportDeletion = await _reportRepository.DeleteAsync(id);
             return reportDeletion ? Ok() : BadRequest();
+        }
+
+        //APPROVE: api/Reports/5
+        [HttpPut("Approve/{id}"), Authorize(Roles = "admin")]
+        public async Task<IActionResult> Approve(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorList = ModelState
+                    .SelectMany(ms => ms.Value!.Errors
+                    .Select(e => new { Field = ms.Key, Error = e.ErrorMessage }))
+                    .ToList();
+                return BadRequest(errorList);
+            }
+            bool reportApproval = await _reportRepository.ApproveAsync(id);
+            return reportApproval ? Ok() : BadRequest();
         }
     }
 }
