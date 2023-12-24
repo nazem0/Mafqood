@@ -11,7 +11,8 @@ namespace Persistence
         {
             services
             .AddScoped<IUnitOfWork, UnitOfWork>()
-            .AddScoped<IReportRepository, ReportRepository>();
+            .AddScoped<IReportRepository, ReportRepository>()
+            .AddScoped<IAccountRepository, AccountRepository>();
             return services;
         }
     }
