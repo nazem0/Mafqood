@@ -7,6 +7,8 @@ using System.Globalization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 public class Program
 {
@@ -31,6 +33,8 @@ public class Program
 
     private static void ConfigureServices(IServiceCollection services, WebApplicationBuilder builder)
     {
+
+
         services.InfrastructureDependencyInjection()
                 .PersistenceDependencyInjection()
                 .AddDbContext<EntitiesContext>(dbContext =>
@@ -65,10 +69,16 @@ public class Program
                     #endregion
                 })
                 .AddHttpContextAccessor()
+                .AddIdentity<User, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<EntitiesContext>()
+                .AddDefaultTokenProviders();
+
+        services
                 .AddControllers();
 
-        services.AddEndpointsApiExplorer()
-                .AddSwaggerGen();
+        services
+            .AddEndpointsApiExplorer()
+            .AddSwaggerGen();
 
         services.AddAuthentication(Option =>
         {
