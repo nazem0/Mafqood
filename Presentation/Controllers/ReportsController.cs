@@ -31,10 +31,10 @@ namespace Presentation.Controllers
         }
 
         [Authorize]
-        [HttpGet("GetUnvalid/{pageIndex}")]
-        public ActionResult<PaginationViewDTO<ReportViewDTO>> GetUnvalid(int pageIndex, int pageSize = 5)
+        [HttpGet("GetInvalid/{pageIndex}")]
+        public ActionResult<PaginationViewDTO<ReportViewDTO>> GetInvalid(int pageIndex, int pageSize = 5)
         {
-            return _reportRepository.GetUnvalid(pageIndex, pageSize);
+            return _reportRepository.GetInvalid(pageIndex, pageSize);
         }
 
     }

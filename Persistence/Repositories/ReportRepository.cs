@@ -48,7 +48,7 @@ namespace Persistence.Repositories
                 .OrderByDescending(r => r.DateTime)
                 .ToPaginationViewDTO(pageIndex, pageSize, _mapper.Map<ReportViewDTO>);
         }
-        public PaginationViewDTO<ReportViewDTO> GetUnvalid(int pageIndex, int pageSize)
+        public PaginationViewDTO<ReportViewDTO> GetInvalid(int pageIndex, int pageSize)
         {
             return
                 _reports

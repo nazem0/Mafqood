@@ -8,7 +8,7 @@ namespace Application.Interfaces.IRepositories
     {
         PaginationViewDTO<ReportViewDTO> Get(int pageIndex, int pageSize, ReportFiltrationDTO filter);
         PaginationViewDTO<ReportViewDTO> GetAll(int pageIndex, int pageSize, ReportFiltrationDTO filter);
-        PaginationViewDTO<ReportViewDTO> GetUnvalid(int pageIndex, int pageSize);
+        PaginationViewDTO<ReportViewDTO> GetInvalid(int pageIndex, int pageSize);
         Task<ReportViewDTO?> GetByIdAsync(Guid id);
         Task<bool> AddAsync(ReportAdditionDTO report);
         Task<bool> SoftDeleteAsync(Guid id, string deletionCode);
