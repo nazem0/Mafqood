@@ -20,6 +20,7 @@ namespace Persistence.DataSeeding
                     NormalizedUserName = "ADMIN@MAFQOOD.COM",
                     PhoneNumber = "01100233249",
                     PasswordHash = PasswordHasher.HashPassword(null, "Asd@12345"),
+                    SecurityStamp = Guid.NewGuid().ToString()
                 });
             builder.Entity<IdentityUserRole<Guid>>().HasData(
             new IdentityUserRole<Guid>
