@@ -73,7 +73,7 @@ namespace Presentation.Controllers
         }
 
         //APPROVE: api/Reports/5
-        [HttpPut("Approve/{id}"), Authorize(Roles = "admin")]
+        [HttpPatch("Approve/{id}"), Authorize(Roles = "admin")]
         public async Task<IActionResult> Approve(Guid id)
         {
             if (!ModelState.IsValid)
