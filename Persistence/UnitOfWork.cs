@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Persistence
 {
@@ -10,13 +12,37 @@ namespace Persistence
             _entitiesContext = entitiesContext;
         }
 
-        public int SaveChanges()
+        public HttpStatusCode SaveChanges()
         {
-            return _entitiesContext.SaveChanges();
+
+            try
+            {
+                _entitiesContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                //Log exception using logger ex : serilog
+                if (ex is DbUpdateException) return HttpStatusCode.InternalServerError;
+                else if (ex is DbUpdateConcurrencyException) return HttpStatusCode.Conflict;
+                else return HttpStatusCode.InternalServerError;
+            }
+            return HttpStatusCode.OK;
         }
-        public async Task<int> SaveChangesAsync()
+        public async Task<HttpStatusCode> SaveChangesAsync()
         {
-            return await _entitiesContext.SaveChangesAsync();
+            try
+            {
+                await _entitiesContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                //Log exception using logger ex : serilog
+                if (ex is DbUpdateException) return HttpStatusCode.InternalServerError;
+                else if (ex is DbUpdateConcurrencyException) return HttpStatusCode.Conflict;
+                else if (ex is OperationCanceledException) return HttpStatusCode.BadRequest;
+                else return HttpStatusCode.InternalServerError;
+            }
+            return HttpStatusCode.OK;
         }
     }
 }

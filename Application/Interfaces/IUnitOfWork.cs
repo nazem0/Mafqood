@@ -1,8 +1,10 @@
-﻿namespace Application.Interfaces
+﻿using System.Net;
+
+namespace Application.Interfaces
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync();
-        int SaveChanges();
+        HttpStatusCode SaveChanges();
+        Task<HttpStatusCode> SaveChangesAsync();
     }
 }
