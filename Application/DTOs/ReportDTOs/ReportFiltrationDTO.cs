@@ -12,7 +12,7 @@ namespace Application.DTOs.ReportDTOs
     {
         public string? Keyword { get; set; }
         public string? Name { get; set; }
-        public bool? Gender { get; set; }
+        public Gender? Gender { get; set; }
         public SkinTone? SkinTone { get; set; }
         public HairType? HairType { get; set; }
         public bool? FacialHair { get; set; }
@@ -26,6 +26,8 @@ namespace Application.DTOs.ReportDTOs
         public string? District { get; set; }
         public int? GovernorateId { get; set; }
         public int? CityId { get; set; }
+        public bool? Valid { get; set; }
+        public bool? Missing { get; set; }
         public DateTime? DateTime { get; set; }
     }
 }
