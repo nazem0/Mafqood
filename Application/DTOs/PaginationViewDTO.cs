@@ -3,9 +3,9 @@
     public class PaginationViewDTO<T>
     {
         public required IEnumerable<T> Data { get; set; }
-        public int PageSize { get; set; }
-        public int PageIndex { get; set; }
-        public long Count { get; set; }
-        public int LastPage { get; set; }
+        public required int PageSize { get; set; }
+        public required int PageIndex { get; set; }
+        public required long Count { get; set; }
+        public required int LastPage { get; set; }
     }
 }
