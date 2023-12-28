@@ -23,30 +23,21 @@ namespace Presentation.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromForm] LoginDTO loginDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorList = ModelState
-                    .SelectMany(ms => ms.Value!.Errors
-                    .Select(e => new { Field = ms.Key, Error = e.ErrorMessage }))
-                    .ToList();
-                return BadRequest(errorList);
-            }
-
             SignInResult SignInResult = await _accountRepository.Login(loginDTO);
-            if (SignInResult.Succeeded)
-            {
-                User? user = await _userManager.FindByEmailAsync(loginDTO.Email);
-                string tokenString = await _accountRepository.GenerateJSONWebToken(user!);
-                IList<string> roles = await _userManager.GetRolesAsync(user!);
-                return Ok(new
-                {
-                    token = tokenString,
-                    role = roles,
-                    id = user!.Id
-                });
 
-            }
-            else return new ObjectResult("User name or Password is Wrong");
+            if (!SignInResult.Succeeded) return BadRequest("User name or Password is Wrong");
+
+            User? user = await _userManager.FindByEmailAsync(loginDTO.Email);
+            string tokenString = await _accountRepository.GenerateJSONWebToken(user!);
+            IList<string> roles = await _userManager.GetRolesAsync(user!);
+            return Ok(new
+            {
+                token = tokenString,
+                role = roles.First(),
+                id = user!.Id
+            });
+
+
         }
 
         [HttpGet("Logout")]
