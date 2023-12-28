@@ -30,12 +30,5 @@ namespace Presentation.Controllers
             return _reportRepository.GetAll(pageIndex, pageSize, filter);
         }
 
-        [Authorize]
-        [HttpGet("GetInvalid/{pageIndex}")]
-        public ActionResult<PaginationViewDTO<ReportViewDTO>> GetInvalid(int pageIndex, int pageSize = 5)
-        {
-            return _reportRepository.GetInvalid(pageIndex, pageSize);
-        }
-
     }
 }
