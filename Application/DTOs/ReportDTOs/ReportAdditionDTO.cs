@@ -10,7 +10,7 @@ namespace Application.DTOs.ReportDTOs
         [MaxLength(255)]
         public string? Name { get; set; }
         [Required]
-        public bool Gender { get; set; }
+        public Gender Gender { get; set; }
         [Required]
         public SkinTone SkinTone { get; set; }
         [Required]

@@ -5,7 +5,7 @@ namespace Domain.Entities
     public class Report : BaseModel
     {
         public string? Name { get; set; }
-        public bool Gender { get; set; }
+        public Gender Gender { get; set; }
         public SkinTone SkinTone { get; set; }
         public HairType HairType { get; set; }
         public bool FacialHair { get; set; }

@@ -8,7 +8,7 @@ namespace Application.DTOs.ReportDTOs
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
-        public bool Gender { get; set; }
+        public Gender Gender { get; set; }
         public SkinTone SkinTone { get; set; }
         public HairType HairType { get; set; }
         public bool FacialHair { get; set; }
