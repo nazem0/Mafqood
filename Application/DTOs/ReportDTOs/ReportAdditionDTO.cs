@@ -39,7 +39,7 @@ namespace Application.DTOs.ReportDTOs
         public string? AdditionalInfo { get; set; }
         [Required, DataType(DataType.Password), MaxLength(32)]
         public required string DeletionCode { get; set; }
-        [Required, DataType(DataType.Upload), OnlyImageFormFileType, MaxFormFileCollectionCount(3), MaxFormFileCollectionSize(10)]
+        [Required, DataType(DataType.Upload), OnlyImageFormFileType, MaxFormFileCollectionCount(5), MaxFormFileCollectionSize(10)]
         public required IFormFileCollection ReportAttachments { get; set; }
     }
 }
