@@ -9,33 +9,45 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi.Models;
 
-public class Program
+namespace API
 {
-    public static void Main(string[] args)
+    public class Program
     {
-        var builder = WebApplication.CreateBuilder(args);
-        ConfigureLogging(builder);
-        ConfigureServices(builder.Services, builder);
-
-        var app = builder.Build();
-        ConfigureApp(app);
-        RunApplication(app);
-    }
-
-    private static void ConfigureLogging(WebApplicationBuilder builder)
-    {
-        builder.Host.UseSerilog((context, configuration) =>
+        public static void Main(string[] args)
         {
-            configuration.ReadFrom.Configuration(context.Configuration);
-        });
-    }
+            var builder = WebApplication.CreateBuilder(args);
+            ConfigureLogging(builder);
+            ConfigureServices(builder.Services, builder);
 
-    private static void ConfigureServices(IServiceCollection services, WebApplicationBuilder builder)
-    {
+            var app = builder.Build();
+            ConfigureApp(app);
 
+            app.Run();
 
-        services.InfrastructureDependencyInjection()
+        }
+
+        private static void ConfigureLogging(WebApplicationBuilder builder)
+        {
+            builder.Host.UseSerilog((context, configuration) =>
+            {
+                configuration.ReadFrom.Configuration(context.Configuration);
+            });
+        }
+
+        private static void ConfigureServices(IServiceCollection services, WebApplicationBuilder builder)
+        {
+
+            services
+                .AddCors(option =>
+                {
+                    option.AddDefaultPolicy(i =>
+                    i.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+                })
+                .InfrastructureDependencyInjection()
                 .PersistenceDependencyInjection()
                 .AddDbContext<EntitiesContext>(dbContext =>
                 {
@@ -73,56 +85,77 @@ public class Program
                 .AddEntityFrameworkStores<EntitiesContext>()
                 .AddDefaultTokenProviders();
 
-        services
-                .AddControllers();
+            services
+                    .AddControllers();
 
-        services
-            .AddEndpointsApiExplorer()
-            .AddSwaggerGen();
+            services
+                .AddEndpointsApiExplorer()
+                .AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Title = "Mafqood API",
+                        Version = "v1"
+                    });
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                    {
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer",
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer Token\"",
+                    });
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                    },
+                    Array.Empty<string>()
+                    }
+                    });
+                });
+            ;
 
-        services.AddAuthentication(Option =>
-        {
-            Option.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-            Option.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-            Option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(Options =>
-        {
-            Options.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(Option =>
             {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = false,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
-            };
+                Option.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                Option.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+                Option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(Options =>
+            {
+                Options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+                };
 
-        });
-        // Additional service configurations...
-    }
+            });
+            // Additional service configurations...
+        }
 
-    private static void ConfigureApp(WebApplication app)
-    {
-        var supportedCultures = new[] { new CultureInfo("ar-EG") }; // for Arabic
-        app.UseRequestLocalization(new RequestLocalizationOptions
+        private static void ConfigureApp(WebApplication app)
         {
-            DefaultRequestCulture = new RequestCulture("ar-EG"),
-            SupportedCultures = supportedCultures,
-            SupportedUICultures = supportedCultures
-        });
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger().UseSwaggerUI();
+            }
 
-        app.UseStaticFiles()
-           .UseSerilogRequestLogging()
-           .UseSwagger()
-           .UseSwaggerUI()
-           .UseHttpsRedirection()
-           .UseAuthentication()
-           .UseAuthorization();
-        app.MapControllers();
-    }
+            app.UseStaticFiles()
+                .UseSerilogRequestLogging()
+                .UseHttpsRedirection()
+                .UseAuthentication()
+                .UseAuthorization();
 
-    private static void RunApplication(WebApplication app)
-    {
-        app.Run();
+            app.MapControllers();
+        }
     }
 }
