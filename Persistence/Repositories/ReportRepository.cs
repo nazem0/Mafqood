@@ -57,7 +57,7 @@ namespace Persistence.Repositories
         {
             Report createdReport = _mapper.Map<Report>(report);
             string directoryPath = Path.Combine
-                (Directory.GetCurrentDirectory(), "wwwroot", "Report", createdReport.Id.ToString());
+                (Directory.GetCurrentDirectory(), "wwwroot", "report", createdReport.Id.ToString());
             #region Directory Existence Checking
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
@@ -106,7 +106,7 @@ namespace Persistence.Repositories
             var report = await _reports.FindAsync(id);
             if (report is null) return HttpStatusCode.NotFound;
             string directoryPath = Path.Combine
-                (Directory.GetCurrentDirectory(), "wwwroot", "Report", report.Id.ToString());
+                (Directory.GetCurrentDirectory(), "wwwroot", "report", report.Id.ToString());
             if (!Directory.Exists(directoryPath))
                 Directory.Delete(directoryPath, true);
             var deletionResult = await _unitOfWork.SaveChangesAsync();
