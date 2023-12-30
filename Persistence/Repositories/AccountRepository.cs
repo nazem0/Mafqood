@@ -32,12 +32,12 @@ namespace Persistence.Repositories
             _configuration = configuration;
         }
 
-        public async Task<SignInResult> Login(LoginDTO logginDTO)
+        public async Task<SignInResult> Login(LoginDTO loginDTO)
         {
-            var User = await _userManager.FindByEmailAsync(logginDTO.Email);
+            var User = await _userManager.FindByNameAsync(loginDTO.Username);
             if (User != null)
                 return await _signInManager.PasswordSignInAsync
-                    (User, logginDTO.Password, logginDTO.RememberMe, logginDTO.RememberMe);
+                    (User, loginDTO.Password, loginDTO.RememberMe, false);
             else
                 return SignInResult.Failed;
         }
@@ -47,7 +47,7 @@ namespace Persistence.Repositories
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<string> GenerateJSONWebToken(User user)
+        public async Task<string> GenerateJSONWebToken(User user, bool rememberMe)
         {
             var userRoles = await _userManager.GetRolesAsync(user);
             var roles = userRoles.Select(o => new Claim(ClaimTypes.Role, o));
@@ -60,12 +60,16 @@ namespace Persistence.Repositories
             }
             .Union(roles);
 
-            var token = new JwtSecurityToken(
-              expires: DateTime.Now.AddDays(30),
-              signingCredentials: credentials,
-              claims: claims);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return 
+                rememberMe is true ? 
+                new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
+                    signingCredentials: credentials,
+                    claims: claims))
+                :
+                new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
+                    expires: DateTime.Now.AddDays(7),
+                    signingCredentials: credentials,
+                    claims: claims));
         }
     }
 }

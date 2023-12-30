@@ -15,10 +15,7 @@ namespace Persistence.DataSeeding
                 {
                     Id = Guid.Parse("da18f5d6-6034-436c-9393-1787b8b419fb"),
                     UserName = "admin",
-                    Email = "admin@mafqood.com",
-                    NormalizedEmail = "ADMIN@MAFQOOD.COM",
-                    NormalizedUserName = "ADMIN@MAFQOOD.COM",
-                    PhoneNumber = "01100233249",
+                    NormalizedUserName = "ADMIN",
                     PasswordHash = PasswordHasher.HashPassword(null, "Asd@12345"),
                     SecurityStamp = Guid.NewGuid().ToString()
                 });

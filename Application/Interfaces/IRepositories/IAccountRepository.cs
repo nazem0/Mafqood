@@ -6,9 +6,9 @@ namespace Application.Interfaces.IRepositories
 {
     public interface IAccountRepository
     {
-        Task<SignInResult> Login(LoginDTO logginDTO);
+        Task<SignInResult> Login(LoginDTO loginDTO);
         Task Logout();
-        Task<string> GenerateJSONWebToken(User user);
+        Task<string> GenerateJSONWebToken(User user,bool rememberMe);
     }
 }
 

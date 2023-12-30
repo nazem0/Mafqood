@@ -27,8 +27,8 @@ namespace Presentation.Controllers
 
             if (!SignInResult.Succeeded) return BadRequest("User name or Password is Wrong");
 
-            User? user = await _userManager.FindByEmailAsync(loginDTO.Email);
-            string tokenString = await _accountRepository.GenerateJSONWebToken(user!);
+            User? user = await _userManager.FindByNameAsync(loginDTO.Username);
+            string tokenString = await _accountRepository.GenerateJSONWebToken(user!,loginDTO.RememberMe);
             IList<string> roles = await _userManager.GetRolesAsync(user!);
             return Ok(new
             {
