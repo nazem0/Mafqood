@@ -7,8 +7,8 @@ namespace Application.Interfaces.IRepositories
 {
     public interface IReportRepository
     {
-        PaginationViewDTO<ReportViewDTO> Get(int pageIndex, int pageSize, ReportFiltrationDTO filter);
-        PaginationViewDTO<ReportViewDTO> GetAll(int pageIndex, int pageSize, ReportFiltrationDTO filter);
+        Task<PaginationViewDTO<ReportViewDTO>> GetAsync(int pageIndex, int pageSize, ReportFiltrationDTO filter);
+        Task<PaginationViewDTO<ReportViewDTO>> GetAllAsync(int pageIndex, int pageSize, ReportFiltrationDTO filter);
         Task<ReportViewDTO?> GetByIdAsync(Guid id);
         Task<HttpStatusCode> AddAsync(ReportAdditionDTO report);
         Task<HttpStatusCode> SoftDeleteAsync(Guid id, string deletionCode);

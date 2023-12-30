@@ -29,22 +29,22 @@ namespace Persistence.Repositories
             _reports = context.Set<Report>();
         }
 
-        public PaginationViewDTO<ReportViewDTO> Get(int pageIndex, int pageSize, ReportFiltrationDTO filter)
+        public async Task<PaginationViewDTO<ReportViewDTO>> GetAsync(int pageIndex, int pageSize, ReportFiltrationDTO filter)
         {
-            return
-                _reports
+            var reports = await _reports
                 .Where(Filter(filter))
                 .OrderByDescending(r => r.DateTime)
-                .ToPaginationViewDTO(pageIndex, pageSize, _mapper.Map<ReportViewDTO>);
+                .ToListAsync();
+            return reports.ToPaginationViewDTO(pageIndex, pageSize, _mapper.Map<ReportViewDTO>);
         }
-        public PaginationViewDTO<ReportViewDTO> GetAll(int pageIndex, int pageSize, ReportFiltrationDTO filter)
+        public async Task<PaginationViewDTO<ReportViewDTO>> GetAllAsync(int pageIndex, int pageSize, ReportFiltrationDTO filter)
         {
-            return
-                _reports
+            var reports = await _reports
                 .IgnoreQueryFilters()
                 .Where(Filter(filter))
                 .OrderByDescending(r => r.DateTime)
-                .ToPaginationViewDTO(pageIndex, pageSize, _mapper.Map<ReportViewDTO>);
+                .ToListAsync();
+            return reports.ToPaginationViewDTO(pageIndex, pageSize, _mapper.Map<ReportViewDTO>);
         }
 
         public async Task<ReportViewDTO?> GetByIdAsync(Guid id)

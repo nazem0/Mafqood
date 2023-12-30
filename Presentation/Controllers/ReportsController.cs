@@ -18,16 +18,16 @@ namespace Presentation.Controllers
 
         // GET: api/Reports
         [HttpGet("{pageIndex}")]
-        public ActionResult<PaginationViewDTO<ReportViewDTO>> GetReports(int pageIndex, [FromQuery] ReportFiltrationDTO filter, int pageSize = 5)
+        public async Task<ActionResult<PaginationViewDTO<ReportViewDTO>>> GetReportsAsync(int pageIndex, [FromQuery] ReportFiltrationDTO filter, int pageSize = 5)
         {
-            return _reportRepository.Get(pageIndex, pageSize, filter);
+            return await _reportRepository.GetAsync(pageIndex, pageSize, filter);
         }
 
         [Authorize]
         [HttpGet("GetAll/{pageIndex}")]
-        public ActionResult<PaginationViewDTO<ReportViewDTO>> GetAll(int pageIndex, [FromQuery] ReportFiltrationDTO filter, int pageSize = 5)
+        public async Task<ActionResult<PaginationViewDTO<ReportViewDTO>>> GetAllAsync(int pageIndex, [FromQuery] ReportFiltrationDTO filter, int pageSize = 5)
         {
-            return _reportRepository.GetAll(pageIndex, pageSize, filter);
+            return await _reportRepository.GetAllAsync(pageIndex, pageSize, filter);
         }
 
     }
