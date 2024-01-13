@@ -1,20 +1,23 @@
 ﻿using Domain.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.ExtensionMethods
 {
     public static class DataExtensions
     {
-        public static PaginationViewDTO<TResult> ToPaginationViewDTO<TSource, TResult>
+        public static async Task<PaginationViewDTO<TResult>> ToPaginationViewDTOAsync<TSource, TResult>
             (
-            this IEnumerable<TSource> data,
-            int pageIndex, int pageSize,
+            this IQueryable<TSource> data,
+            int pageIndex,
+            int pageSize,
             Func<TSource, TResult> selector
             )
         {
-            long count = data.LongCount();
+            data = data.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            var count = await data.LongCountAsync();
             return new PaginationViewDTO<TResult>
             {
-                Data = data.Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(selector),
+                Data =  data.Select(selector).ToList(),
                 Count = count,
                 LastPage = (int)Math.Ceiling((double)count / pageSize),
                 PageIndex = pageIndex,
